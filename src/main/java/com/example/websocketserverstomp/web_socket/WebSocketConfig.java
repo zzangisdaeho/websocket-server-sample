@@ -12,9 +12,14 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
 
     private final CustomWebSocketHandler customWebSocketHandler;
+    private final CustomHandshakeInterceptor customHandshakeInterceptor;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(customWebSocketHandler, "/chat").setAllowedOrigins("*");
+        registry
+                .addHandler(customWebSocketHandler, "/chat/{username}")
+                .addInterceptors(customHandshakeInterceptor)
+                .setAllowedOrigins("*");
+//                .withSockJS();
     }
 }
